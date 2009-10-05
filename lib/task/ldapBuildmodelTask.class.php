@@ -36,13 +36,13 @@ EOF;
   {
     $finder = sfFinder::type('file')->name('ldap.yml');
 
-    $schemas = array_unique($finder->in(sfConfig::get('sf_config_dir')));
+    $schemas = array_unique($finder->follow_link()->in(sfConfig::get('sf_config_dir')));
     if (!count($schemas))
     {
       throw new sfCommandException('You must create a ldap.yml file.');
     }
 
-    $finder = sfFinder::type('file')->name('ldap_connections.yml');
+    $finder = sfFinder::type('file')->follow_link()->name('ldap_connections.yml');
 
     $schemas = array_unique($finder->in(sfConfig::get('sf_config_dir')));
     if (!count($schemas))
