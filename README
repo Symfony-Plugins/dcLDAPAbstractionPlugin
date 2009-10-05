@@ -1,0 +1,121 @@
+= dcLDAPAbstractionPlugin =
+
+dcLDAPAbstractionPlugin provides a LDAP abstraction through objects defined by a configuration file. It is also possible to use multiple LDAP connections.
+
+== Installation ==
+
+  * from the subversion repository:
+
+  {{{
+  $ svn co http://svn.symfony-project.com/plugins/dcLDAPAbstractionPlugin/trunk plugins/dcLDAPAbstractionPlugin
+  }}}
+
+== Usage ==
+
+  Create ldap.yml and ldap_connections.yml files. These files are used to build the model and the LDAP connection for accessing the service.
+
+  {{{
+  // ldap_connections.yml:
+  ldap:
+    host: www.example.com
+    username: cn=admin,o=www.example.com
+    password: my$ecret
+    use_ssl: false
+  }}}
+
+  You can add multiple connections. In this example, we will use just one, called ldap.
+
+  {{{
+  // ldap.yml:
+  ldap:
+    user:
+      base_dn: cn=Users,o=www.example.com
+
+    group:
+      base_dn: cn=Groups,o=www.example.com
+  }}}
+
+  Like in the connections configuration, you can add multiple definitions for multiple connections.
+
+  Then, use the ldap:build-model task to create the model.
+
+  {{{
+  $ ./symfony ldap:build-model
+  }}}
+
+  This task will create 2 directories:
+    * lib/ldap
+    * lib/ldap/base
+
+  In these directories, this task will create 8 classes (similar to the classes created by propel:build-model task):
+    * lib/ldap/User.php
+    * lib/ldap/UserPeer.php
+    * lib/ldap/Group.php
+    * lib/ldap/GroupPeer.php
+    * lib/ldap/base/BaseUser.php
+    * lib/ldap/base/BaseUserPeer.php
+    * lib/ldap/base/BaseGroup.php
+    * lib/ldap/base/BaseGroupPeer.php
+
+== Accessing attributes ==
+
+  To access the ldap object attributes:
+
+  {{{
+  // to access the user's cn:
+  $user->get('cn');
+  }}}
+
+== Searching ==
+
+  To search LDAP objects in the LDAP server, you must use the LDAPCriteria (like a propel Criteria), and then you must use doSelect or doSelectOne methods:
+
+  {{{
+  $c = new LDAPCriteria();
+  $c->add('cn', 'Patricio Mac Adden');
+  $c->addOr('uid', 'pmacadd', LDAPCriteria::EQUAL, LDAPCriteria::BEGINS);
+
+  $results = UserPeer::doSelect($c);
+  }}}
+
+  {{{
+  $user = UserPeer::retrieveBy('uid', 'pmacadden');
+  }}}
+
+== LDAPCriteria ==
+
+  LDAPCriteria is like a propel Criteria, except it takes 4 arguments instead of 3.
+
+  {{{
+  //$c = new LDAPCriteria();
+  //$c->add(ATTRIBUTE, VALUE, COMPARATOR, LIKE);
+  }}}
+
+  Where comparator is:
+    * LDAPCriteria::EQUAL ( = )
+    * LDAPCriteria::GREATER ( >= )
+    * LDAPCriteria::LESS ( <= )
+    * LDAPCriteria::APPROX ( ~= )
+
+  And like is:
+    * LDAPCriteria::BEGINS ( pmaca* )
+    * LDAPCritera::ENDS (*dden)
+    * LDAPCriteria::CONTAINS ( *macadd* )
+
+  === Methods ===
+    * add
+    * addOr
+    * setFilter(String $str): set the filter instead of use add and addOr methods.
+    * setSearchScope(Integer $int): set the search scope:
+      * LDAPCriteria::BASE
+      * LDAPCriteria::ONE
+      * LDAPCriteria::SUB
+      * LDAPCriteria::CHILDREN
+    * setAttributes(array $attributes): retrieve only these attributes.
+    * setAttrsonly()
+    * setSizelimit
+    * setTimelimit
+    * setDeref
+    * setSortfilter(String $attribute): sort results by this attribute.
+
+    ... and the getters.
