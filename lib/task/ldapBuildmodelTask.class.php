@@ -77,10 +77,20 @@ EOF;
         $peer_path = $lib_path."/".$class."Peer.php";
         $object_path = $lib_path."/".$class.".php";
 
+        if (file_exists($base_peer_path))
+        {
+          unlink($base_peer_path);
+        }
         $this->logSection('file+', $base_peer_path);
         $sffs->copy(dirname(__FILE__)."/../../data/skeleton/BaseLDAPClassPeer.php", $base_peer_path);
+
+        if (file_exists($base_object_path))
+        {
+          unlink($base_object_path);
+        }
         $this->logSection('file+', $base_object_path);
         $sffs->copy(dirname(__FILE__)."/../../data/skeleton/BaseLDAPClass.php", $base_object_path);
+
         $sffs->replaceTokens(array($base_peer_path,
                                    $base_object_path),
                              "##",
