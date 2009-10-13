@@ -10,6 +10,8 @@ class BaseLDAPeer
 
   const USE_SSL = false;
 
+  public static $exclude_attrs = array();
+
   public function __construct()
   {
   }

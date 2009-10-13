@@ -51,6 +51,24 @@ EOF;
     }
   }
 
+  public function getArrayString($array)
+  {
+    $str = 'array(';
+    if (!is_null($array))
+    {
+      foreach ($array as $value)
+      {
+        $str .= "'".$value."', ";
+      }
+      $str = substr($str, 0, -2).')';
+    }
+    else
+    {
+      $str .= ')';
+    }
+    return $str;
+  }
+
   public function createClasses()
   {
     $sffs = new sfFilesystem();
@@ -100,7 +118,8 @@ EOF;
                                    "USERNAME" => $ldap_connections[$connection]["username"],
                                    "PASSWORD" => $ldap_connections[$connection]["password"],
                                    "USE_SSL" => $ldap_connections[$connection]["use_ssl"]?"true":"false",
-                                   "BASE_DN" => $attrs["base_dn"]));
+                                   "BASE_DN" => $attrs["base_dn"],
+                                   "EXCLUDE_ATTRS" => $this->getArrayString($attrs["exclude_attrs"])));
 
         if (!file_exists($peer_path))
         {

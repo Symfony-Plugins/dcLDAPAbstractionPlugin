@@ -12,6 +12,8 @@ class Base##CLASS##Peer extends BaseLDAPeer
 
   const BASE_DN = "##BASE_DN##";
 
+  public static $exclude_attrs = ##EXCLUDE_ATTRS##;
+
   public static function configureCriteria(LDAPCriteria $ldap_criteria)
   {
     $ldap_criteria->setHost(self::HOST);
@@ -31,7 +33,7 @@ class Base##CLASS##Peer extends BaseLDAPeer
     $ldap_objects = parent::doSelect($ldap_criteria, $conn);
     foreach ($ldap_objects as $ldap_object)
     {
-      $objects[] = ##CLASS##::copyFrom($ldap_object);
+      $objects[] = ##CLASS##::copyFrom($ldap_object, self::$exclude_attrs);
     }
     return $objects;
   }
@@ -40,7 +42,7 @@ class Base##CLASS##Peer extends BaseLDAPeer
   {
     $ldap_criteria = self::configureCriteria($ldap_criteria);
     $ldap_object = parent::doSelectOne($ldap_criteria, $conn);
-    return ##CLASS##::copyFrom($ldap_object);
+    return ##CLASS##::copyFrom($ldap_object, self::$exclude_attrs);
   }
 
   public static function retrieveBy($attribute, $value, $conn = null)
