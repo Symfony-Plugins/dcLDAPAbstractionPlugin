@@ -50,6 +50,6 @@ class Base##CLASS##Peer extends BaseLDAPeer
     $ldap_criteria = self::configureCriteria(new LDAPCriteria());
     $ldap_criteria->add($attribute, $value);
     $ldap_object = parent::doSelectOne($ldap_criteria, $conn);
-    return ##CLASS##::copyFrom($ldap_object);
+    return ##CLASS##::copyFrom($ldap_object, self::$exclude_attrs);
   }
 }

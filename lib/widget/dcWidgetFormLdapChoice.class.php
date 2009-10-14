@@ -37,7 +37,7 @@ class dcWidgetFormLdapChoice extends sfWidgetFormChoice
 
     $ldap_criteria = $this->getOption('ldap_criteria')?$this->getOption('ldap_criteria'):new LDAPCriteria();
     $conn = $this->getOption('connection')?$this->getOption('connection'):null;
-    $ldap_criteria->setSortfilter($this->getOption('sortfilter')?$this->getOption('sortfileter'):null);
+    $ldap_criteria->setSortfilter($this->getOption('sortfilter')?$this->getOption('sortfilter'):null);
 
     $objects = call_user_func("$peer::$peer_method", $ldap_criteria, $conn);
 
