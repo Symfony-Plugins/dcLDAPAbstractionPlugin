@@ -7,9 +7,12 @@ class Base##CLASS## extends BaseLDAPObject
     $new = new ##CLASS##();
     $new->attributes = $ldap_object->attributes;
 
-    foreach ($exclude_attrs as $exclude_attr)
+    if (!empty($exclude_attrs))
     {
-      unset($new->attributes[$exclude_attr]);
+      foreach ($exclude_attrs as $exclude_attr)
+      {
+        unset($new->attributes[$exclude_attr]);
+      }
     }
 
     return $new;
