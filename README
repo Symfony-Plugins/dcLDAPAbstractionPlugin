@@ -57,6 +57,7 @@ dcLDAPAbstractionPlugin provides a LDAP abstraction through objects defined by a
     * lib/ldap/base/BaseGroup.php
     * lib/ldap/base/BaseGroupPeer.php
 
+
 == Accessing attributes ==
 
   To access the ldap object attributes:
@@ -65,6 +66,7 @@ dcLDAPAbstractionPlugin provides a LDAP abstraction through objects defined by a
   // to access the user's cn:
   $user->get('cn');
   }}}
+
 
 == Searching ==
 
@@ -81,6 +83,7 @@ dcLDAPAbstractionPlugin provides a LDAP abstraction through objects defined by a
   {{{
   $user = UserPeer::retrieveBy('uid', 'pmacadden');
   }}}
+
 
 == LDAPCriteria ==
 
