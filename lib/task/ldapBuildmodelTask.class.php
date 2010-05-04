@@ -119,7 +119,7 @@ EOF;
                                    "PASSWORD" => $ldap_connections[$connection]["password"],
                                    "USE_SSL" => $ldap_connections[$connection]["use_ssl"]?"true":"false",
                                    "BASE_DN" => $attrs["base_dn"],
-                                   "EXCLUDE_ATTRS" => $this->getArrayString($attrs["exclude_attrs"])));
+                                   "EXCLUDE_ATTRS" => $this->getArrayString(isset($attrs["exclude_attrs"])?$attrs["exclude_attrs"]:null)));
 
         if (!file_exists($peer_path))
         {
